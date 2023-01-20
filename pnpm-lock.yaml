@@ -1,12 +1,12 @@
 lockfileVersion: 5.4
 
 specifiers:
-  next: ^12.1.0
+  next: ^12.2.4
   nextra: ^1.1.0
-  nextra-theme-docs: ^1.2.2
-  prettier: ^2.0.5
-  react: ^17.0.1
-  react-dom: ^17.0.1
+  nextra-theme-docs: ^1.2.6
+  prettier: ^2.7.1
+  react: ^17.0.2
+  react-dom: ^17.0.2
 
 dependencies:
   next: 12.2.4_sfoxds7t5ydpegc3knd667wn6m
@@ -411,8 +411,8 @@ packages:
       responselike: 1.0.2
     dev: false
 
-  /caniuse-lite/1.0.30001374:
-    resolution: {integrity: sha512-mWvzatRx3w+j5wx/mpFN5v5twlPrabG8NqX2c6e45LCpymdoGqNvRkRutFUqpRTXKFQFNQJasvK0YT7suW6/Hw==}
+  /caniuse-lite/1.0.30001446:
+    resolution: {integrity: sha512-fEoga4PrImGcwUUGEol/PoFCSBnSkA9drgdkxXkJLsUBOnJ8rs3zDv6ApqYXGQFOyMPsjh79naWhF4DAxbF8rw==}
     dev: false
 
   /ccount/1.1.0:
@@ -1697,7 +1697,7 @@ packages:
     dependencies:
       '@next/env': 12.2.4
       '@swc/helpers': 0.4.3
-      caniuse-lite: 1.0.30001374
+      caniuse-lite: 1.0.30001446
       postcss: 8.4.14
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
