@@ -4,4 +4,54 @@ title: AWS AppSync
 
 # AWS AppSync
 
-[スクラップ: AWS AppSync JavaScript ResolverでHTTPデータソース（REST API）からデータを収集する (zenn.dev)](https://zenn.dev/qmotas/scraps/b1cac4c8dcc39a)
+[スクラップ: AWS AppSync JavaScript Resolver で HTTP データソース（REST API）からデータを収集する (zenn.dev)](https://zenn.dev/qmotas/scraps/b1cac4c8dcc39a)
+
+## 概要
+
+- DynamoDB、HTTP などの連携対象を**データソース**として定義する
+  - DynamoDB は**リソース**として自動でスキーマに対応したデータを read/write できる
+- データソースに対応する解決処理を Function として定義する
+  - JavaScript でマッピング定義を書く
+  - 複数データソースに対応する場合は複数の Function を作って Pipeline Resolver で参照する
+- スキーマのフィールドにリゾルバをアタッチする
+  - Function を参照する場合は Pipeline Resolver
+  - 単一のデータソースしか参照しない場合やマッピング定義を JavaScript で書かなくてもよい場合は以前の書き方（VTL）でもよい
+    - JavaScript で統一しておいたほうがよいと思う
+
+## Getting Started
+
+TODO スクラップから
+
+## Query
+
+### Resolver Chain
+
+TODO スクラップから
+
+### データソースに応じたマッピング
+
+#### HTTP
+
+TODO スクラップから要約
+
+## Mutation
+
+TODO
+
+## 開発方法
+
+- ブラウザからコンソールで開発すると、スキーマやマッピング定義（Function）のバージョン管理が行えない
+- ソース管理したい
+  - CloudFormation
+    - TODO
+  - Serverless Framework
+    - TODO
+
+TODO
+
+## 認証
+
+- IAM
+- Amazon Cognito
+- AWS Lambda
+  - 参考 https://zenn.dev/merutin/articles/02960a57bb8947
