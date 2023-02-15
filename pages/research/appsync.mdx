@@ -41,13 +41,65 @@ TODO
 ## 開発方法
 
 - ブラウザからコンソールで開発すると、スキーマやマッピング定義（Function）のバージョン管理が行えない
-- ソース管理したい
+- IaC を採用したい
   - CloudFormation
-    - TODO
+    - AWS 公式のツール
   - Serverless Framework
-    - TODO
+    - Node.js で動かす
+    - AWS Lambda や Google Cloud Functions 等の開発がメイン用途
+    - プラグインを使うことで AppSync の構築も可能
+    - AWS は構築に CloudFormation を使う（定義ファイルからテンプレートを生成してスタックを作成する）
+  - Terraform
+    - HashiCorp のクロスプラットフォーム IaC ツール
 
-TODO
+### 検証
+
+Apollo Odyssey で作った API の一部の仕様を CloudFormation、Serverless Framework、Terraform で実装し、開発者体験の観点で（主観的ではあるが）比較する
+
+#### 実装する API の概要
+
+- [コンソールから API を作ったときの仕様を踏襲](https://zenn.dev/qmotas/scraps/b1cac4c8dcc39a)
+- Query のみ
+- HTTP データソースを参照する
+- 認証は API KEY
+
+#### メモ
+
+- CloudFormation
+  - https://zenn.dev/qmotas/scraps/004850e18f3927
+  - スキーマやリゾルバの実装を外部ファイルに出すことができない
+    - S3 にアップロードすれば参照できるが、バージョン管理と組み合わせるのが困難
+- Serverless Framework
+  - https://zenn.dev/qmotas/scraps/4588709beeb900
+  - CloudFormation をラップして抽象的に定義を書ける
+    - CloudFormation、Terraform と比べて直感的
+  - AppSync の対応はプラグインが必要で、JavaScript Resolver は alpha 版しか対応していない（2023-02-15 時点）
+- Terraform
+  - https://zenn.dev/qmotas/scraps/813803c709997f
+  - 抽象度は CloudFormation と同程度
+  - 公式リファレンスが JavaScript Resolver に対応していて、サンプルがあり助かった
+  - CloudFormation より圧倒的に反映が早い
+  - ドリフト検知は Terraform Cloud を利用しないと行えない
+
+#### 比較
+
+- 書きやすさ
+  - 抽象度が高い Serverless Framework が圧倒的に体験がよい
+  - CloudFormation と Terraform は同程度
+- 仕様の追従
+  - CloudFormation > Terraform > Serverless Framework
+- バージョン管理
+  - スキーマやリゾルバの実装を外部ファイルに書ける Serverless Framework と Terraform は体験がよい
+  - CloudFormation は実質的に外部ファイルの読み込みが行えず（S3 に置かないといけない）、1 ファイルに異なる言語仕様のテキストを混ぜる必要があり体験が悪い
+- 反映速度
+  - Terraform が圧倒的に早い
+  - Serverless Framework は CloudFormation を使用するので遅い
+- その他
+  - Serverless Framework はサーバレスに特化しているので、関連サービスを EC2 等でまとめて構築したいとかは無理
+
+### まとめ
+
+シンプルな BFF の構築だけなら Serverless Framework を使うのがよさそう
 
 ## 認証
 
