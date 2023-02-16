@@ -4,8 +4,6 @@ title: AWS AppSync
 
 # AWS AppSync
 
-[スクラップ: AWS AppSync JavaScript Resolver で HTTP データソース（REST API）からデータを収集する (zenn.dev)](https://zenn.dev/qmotas/scraps/b1cac4c8dcc39a)
-
 ## 概要
 
 - DynamoDB、HTTP などの連携対象を**データソース**として定義する
@@ -18,53 +16,61 @@ title: AWS AppSync
   - 単一のデータソースしか参照しない場合やマッピング定義を JavaScript で書かなくてもよい場合は以前の書き方（VTL）でもよい
     - JavaScript で統一しておいたほうがよいと思う
 
-## Getting Started
-
-TODO スクラップから
-
-## Query
-
-### Resolver Chain
-
-TODO スクラップから
-
-### データソースに応じたマッピング
-
-#### HTTP
-
-TODO スクラップから要約
-
-## Mutation
-
-TODO
-
 ## 開発方法
 
-- ブラウザからコンソールで開発すると、スキーマやマッピング定義（Function）のバージョン管理が行えない
-- IaC を採用したい
-  - CloudFormation
-    - AWS 公式のツール
-  - Serverless Framework
-    - Node.js で動かす
-    - AWS Lambda や Google Cloud Functions 等の開発がメイン用途
-    - プラグインを使うことで AppSync の構築も可能
-    - AWS は構築に CloudFormation を使う（定義ファイルからテンプレートを生成してスタックを作成する）
-  - Terraform
-    - HashiCorp のクロスプラットフォーム IaC ツール
+AppSync で API を開発する主な方法
+
+- ブラウザから AppSync のコンソールで直接編集する
+  - スキーマやリゾルバ/関数のバージョン管理が行えない
+- CloudFormation
+  - AWS 公式のツール
+- Terraform
+  - クロスプラットフォーム IaC ツール
+- Serverless Framework
+  - Node.js で動作するクロスプラットフォーム IaC ツール
+  - AWS Lambda や Google Cloud Functions 等の開発がメイン用途
+  - プラグインを使うことで AppSync の構築も可能
+  - AWS のサービスを構築する場合は CloudFormation を使う（定義ファイルからテンプレートを生成してスタックを作成）
 
 ### 検証
 
-Apollo Odyssey で作った API の一部の仕様を CloudFormation、Serverless Framework、Terraform で実装し、開発者体験の観点で（主観的ではあるが）比較する
+[Apollo Odyssey](https://www.apollographql.com/tutorials/browse) で構築するサンプルアプリケーションの一部の仕様を AppSync コンソール、CloudFormation、Terraform、Serverless Framework でそれぞれ実装し、開発者体験の観点で（主観的ではあるが）比較する
 
 #### 実装する API の概要
 
-- [コンソールから API を作ったときの仕様を踏襲](https://zenn.dev/qmotas/scraps/b1cac4c8dcc39a)
-- Query のみ
-- HTTP データソースを参照する
-- 認証は API KEY
+- 認証は API Key とする
+- リゾルバ、関数は JavaScript で実装する
+- データソースは HTTP のみ
+
+![](./catstronauts-api-overview.drawio.png)
+
+##### スキーマ
+
+```graphql
+type Query {
+  tracksForHome: [Track!]!
+}
+
+type Track {
+  id: ID!
+  title: String!
+  author: Author!
+  thumbnail: String
+  length: Int
+  modulesCount: Int
+}
+
+type Author {
+  id: ID!
+  name: String!
+  photo: String
+}
+```
 
 #### メモ
 
+- AppSync コンソール
+  - https://zenn.dev/qmotas/scraps/b1cac4c8dcc39a
 - CloudFormation
   - https://zenn.dev/qmotas/scraps/004850e18f3927
   - スキーマやリゾルバの実装を外部ファイルに出すことができない
@@ -99,7 +105,12 @@ Apollo Odyssey で作った API の一部の仕様を CloudFormation、Serverles
 
 ### まとめ
 
-シンプルな BFF の構築だけなら Serverless Framework を使うのがよさそう
+- バージョン管理を前提とするなら外部ファイルを扱える Terraform か Serverless Framework を使うのがよい
+- 基本的には Terraform がよさそう
+- Serverless Framework を選ぶケース
+  - 初期構築のハードルを下げたい
+  - 新しい仕様への追従はラグがあってもよい
+  - CloudFormation のドリフト検知を利用したい
 
 ## 認証
 
