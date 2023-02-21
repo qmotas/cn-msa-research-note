@@ -1,5 +1,6 @@
 {
   "overview": "Overview",
   "graphql": "GraphQL",
-  "appsync": "AWS AppSync"
+  "appsync": "AWS AppSync",
+  "apollo": "Apollo Server"
 }
